@@ -279,3 +279,5 @@
 .a36p-stats .stat .n { font-size: 20px; font-weight: 800; color: var(--navy); }
 .a36p-stats .stat .l { font-size: 11.5px; color: var(--ink-2); margin-top: 2px; }
 @media (max-width: 560px) { .a36p-stats { grid-template-columns: 1fr 1fr; } }
+.file-nav a { color: var(--ink, #1a1a2e); text-decoration: none; font-size: 14px; font-weight: 600; }
+.file-nav a:hover { text-decoration: underline; }
