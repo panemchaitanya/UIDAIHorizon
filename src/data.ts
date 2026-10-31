@@ -157,6 +157,8 @@ export const sources = {
     { label: 'PIB: grievances in Aadhaar authentication (Mar 2026)', url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2246220&lang=1&reg=1' },
     { label: 'PIB: third Aadhaar Samvaad - OVSE and offline verification direction (Apr 2025)', url: 'https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2120162' },
     { label: 'Medianama: UIDAI Face Authentication SDK and sandbox (Sep 2026)', url: 'https://www.medianama.com/2026/09/223-uidai-face-authentication-sdk-sandbox-gff-2026/' },
+    { label: 'UIDAI regulations page - names and dates read live 1 Nov 2026', url: 'https://uidai.gov.in/en/about-uidai/legal-framework/regulations.html' },
+    { label: 'UIDAI press releases - titles and dates read live 1 Nov 2026', url: 'https://uidai.gov.in/en/press-releases' },
   ],
   pastYear: [
     { label: 'Kashmir Observer: CIC flags Aadhaar update delays (19 Mar 2026)', url: 'https://kashmirobserver.net/2026/03/19/cic-flags-aadhaar-update-delays-asks-uidai-to-fix-timelines/' },
@@ -177,4 +179,37 @@ export const sources = {
     { label: 'Reddit r/LegalAdviceIndia: child enrolment rejected over name format (Aug 2025)', url: 'https://www.reddit.com/r/LegalAdviceIndia/comments/1n2kqdk/' },
     { label: 'Reddit r/IndiaTech: OTP-on-every-step frustration (Oct 2024)', url: 'https://www.reddit.com/r/IndiaTech/comments/1g8knhc/' },
   ],
+};
+
+// Institutional lists read live from uidai.gov.in on 1 November 2026.
+// Names and dates appear exactly as published on the source pages;
+// these are the latest entries shown there, not a curated selection.
+export const liveReads = {
+  regulations: {
+    url: 'https://uidai.gov.in/en/about-uidai/legal-framework/regulations.html',
+    readOn: '1 Nov 2026',
+    items: [
+      { name: 'Aadhaar (Enrolment and Update) First Amendment Regulations, 2026', date: '12 May 2026', type: 'not stated' },
+      { name: 'Aadhaar (Authentication and Offline Verification) Amendment Regulations, 2025', date: '12 Dec 2025', type: 'not stated' },
+      { name: 'Aadhaar (Enrolment and Update) Third Amendment Regulations, 2025', date: '11 Dec 2025', type: 'not stated' },
+      { name: 'UIDAI (Salary, Allowances and other Terms and Conditions of Service of Employees) Amendment Regulations, 2025', date: '3 Nov 2025', type: 'not stated' },
+      { name: 'UIDAI (Appointment of Officers and Employees) Third Amendment Regulations, 2025', date: '1 Nov 2025', type: 'PDF' },
+      { name: 'Aadhaar (Sharing of Information) First Amendment Regulations, 2025', date: '1 Nov 2025', type: 'PDF' },
+      { name: 'Aadhaar (Enrolment and Update) Second Amendment Regulations, 2025', date: '1 Nov 2025', type: 'PDF' },
+      { name: 'Aadhaar (Payment of Fees for Performance of Authentication) Amendment Regulations, 2025', date: '29 Oct 2025', type: 'PDF' },
+    ],
+  },
+  pressReleases: {
+    url: 'https://uidai.gov.in/en/press-releases',
+    readOn: '1 Nov 2026',
+    items: [
+      { title: 'UIDAI unveils five new initiatives at Aadhaar Samvaad Kolkata to further advance trusted digital identity and good governance', date: '1 Oct 2026', topic: 'Policy', size: '223 KB' },
+      { title: 'UIDAI Launches Aadhaar Face Authentication SDK and Sandbox at Global Fintech Fest 2026', date: '14 Sep 2026', topic: 'Developers', size: '260 KB' },
+      { title: 'Aadhaar App Crosses 5 crore Downloads, Strengthening Convenient and Resident Centric Digital Identity Services', date: '21 Aug 2026', topic: 'Aadhaar App', size: '148 KB' },
+      { title: 'UIDAI Special Drive Completes over 2 Cr Mandatory Biometric Updates (MBU) in Aadhaar for School Children, covering around 1.6 lakh schools', date: '19 Aug 2026', topic: 'Enrolment', size: '143 KB' },
+      { title: "Manipur's FIRST UIDAI Aadhaar Seva Kendra Opens in Imphal", date: '3 Aug 2026', topic: 'Centres', size: '229 KB' },
+      { title: 'UIDAI Enables Free Email Update in Aadhaar through Aadhaar App', date: '21 Jul 2026', topic: 'Aadhaar App', size: '127 KB' },
+      { title: 'Aadhaar App Crosses 40 Million Downloads, Driving Convenient Digital Identity Services', date: '21 Jul 2026', topic: 'Aadhaar App', size: '123 KB' },
+    ],
+  },
 };
