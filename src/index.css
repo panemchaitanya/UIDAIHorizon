@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Bricolage Grotesque", "Noto Sans Devanagari", system-ui, sans-serif;
+  --font-sans: "DM Sans", "Noto Sans Devanagari", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Swiss-Civic Architectural Monochrome + Authentic Aadhaar Crimson & Saffron */
+  --color-canvas: #FFFFFF;
+  --color-stone-surface: #F5F5F2;
+  --color-stone-subtle: #ECECE7;
+  --color-hairline: #E2E2DC;
+  --color-carbon: #111111;
+  --color-graphite: #575753;
+
+  --color-aadhaar: #C8232C;
+  --color-aadhaar-dark: #A11A22;
+  --color-saffron: #E86F1F;
+  --color-verified: #0D7A43;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-carbon);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    letter-spacing: -0.028em;
+  }
+
+  :focus-visible {
+    outline: 2.5px solid var(--color-aadhaar);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Crisp subtle architectural dot-grid for specimen framing */
+.bg-architectural-grid {
+  background-image: radial-gradient(#D4D4CE 1px, transparent 1px);
+  background-size: 20px 20px;
+}

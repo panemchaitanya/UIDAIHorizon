@@ -1,6 +1,5 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { FileRouter } from '@instinct/files';
-import { App } from './App';
+import {createRoot} from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
 
-createRoot(document.getElementById('root')!).render(<FileRouter><App /></FileRouter>);
+createRoot(document.getElementById('root')!).render(<App />);

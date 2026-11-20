@@ -1,95 +1,267 @@
-import React from 'react';
-import { FileCard, Link, NavLink, Route, Routes } from './platform';
-import './style.css';
-import { Research } from './sections/Research';
-import { PrototypeHome, PrototypeUpdate, PrototypeStatus, PrototypeCentres, PrototypeWallet, PrototypeServices } from './sections/Prototype';
-import { PrototypeEverything, PrototypeAbout, PrototypeLegal, PrototypeDevelopers, PrototypeNewsroom, PrototypeHelp } from './sections/Coverage';
-import { Wireframes, Testing, Sources } from './sections/Extras';
-import { observed, pillars } from './data';
-import heroArt from './photos/hero-2036.png';
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-function Cover() {
-  return <>
-    <div className="a36-hero">
-      <div className="kicker">Academic concept · IIIT Hyderabad · AI for Product Managers</div>
-      <h1>UIDAI <span>Horizon</span></h1>
-      <p className="sub">A product manager's reimagining of uidai.gov.in, ten years forward: from a portal of menus to a proactive identity companion for 145 crore people. Grounded in a six-stage UX audit of the live site.</p>
-      <div className="badges">
-        <span className="a36-badge">UX audit</span>
-        <span className="a36-badge">Clickable prototype</span>
-        <span className="a36-badge">RICE priorities</span>
-        <span className="a36-badge">Test plan</span>
-      </div>
-      <img className="hero-art" src={heroArt} alt="Illustration of Indian citizens using simple digital identity services at sunrise" />
-    </div>
-    <div className="a36-disclaimer">
-      <strong>Unofficial academic project.</strong> This is a student design concept for coursework. It is not affiliated with, endorsed by, or connected to UIDAI or the Government of India. It never asks for a real Aadhaar number, OTP or any personal data - every person, request and data point shown is fictional. For real Aadhaar services, only use <strong>uidai.gov.in</strong>.
-    </div>
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Menu, X } from 'lucide-react';
+import {
+  AuthLogEntry,
+  INITIAL_AUTH_LOGS,
+  INITIAL_SRN_RECORDS,
+  Lang,
+  ServiceKey,
+  SrnRecord,
+  ViewTab,
+} from './data/uidaiData';
+import { Portal2036View } from './components/Portal2036View';
+import { Services2036View } from './components/Services2036View';
+import { SevaKendrasView } from './components/SevaKendrasView';
+import { EcosystemHelpView } from './components/EcosystemHelpView';
+import { AadhaarSunburstMark, AshokaWheelSeal } from './components/UidaiEmblems';
+import { ScrollProgressHairline } from './components/MotionPrimitives';
 
-    <div className="a36-section">
-      <div className="eyebrow">The assignment</div>
-      <h2>Six stages, one story</h2>
-      <p className="lede">The brief: understand the user, complete a real task on the current site, audit it against Nielsen's heuristics, prioritise fixes, redesign the experience, and test it. Each stage is a page here.</p>
-      <div className="a36-grid cols-3">
-        <Link className="a36-cardlink" to="/research"><div className="num">Stages 1-4</div><h3>The evidence</h3><p>Persona and job-to-be-done, a timed real task on uidai.gov.in, five Nielsen issues with sources, and the top three fixes scored with RICE.</p><span className="go">Read the audit →</span></Link>
-        <Link className="a36-cardlink" to="/prototype"><div className="num">Stage 5 · Concept</div><h3>The 2036 prototype</h3><p>A clickable mockup of the redesigned site: life-event homepage, guided update flow, live status tracking, trusted centres and identity control.</p><span className="go">Open the prototype →</span></Link>
-        <Link className="a36-cardlink" to="/wireframes"><div className="num">Stage 5 · Process</div><h3>Wireframes and flow</h3><p>The low-fidelity thinking behind the screens and the improved end-to-end user flow for the most painful journey.</p><span className="go">See the process →</span></Link>
-        <Link className="a36-cardlink" to="/testing"><div className="num">Stage 6</div><h3>Test and measure</h3><p>The usability test protocol for 3-5 users and the before/after scoreboard - ready to fill with real sessions, no invented results.</p><span className="go">See the plan →</span></Link>
-        <Link className="a36-cardlink" to="/sources"><div className="num">Appendix</div><h3>Sources and method</h3><p>Every claim's evidence: official UIDAI pages, past-year complaints, historical context, and what was observed live on 31 Oct 2026.</p><span className="go">Check the evidence →</span></Link>
-        <a className="a36-cardlink" href="https://uidai.gov.in/en/" target="_blank" rel="noreferrer"><div className="num">The baseline</div><h3>The current site</h3><p>uidai.gov.in today: the real website this concept audits and reimagines. Opens the official site in a new tab.</p><span className="go">Visit uidai.gov.in →</span></a>
-      </div>
-    </div>
+export default function App() {
+  const [lang, setLang] = useState<Lang>('en');
+  const [activeTab, setActiveTab] = useState<ViewTab>('portal');
+  const [activeService, setActiveService] = useState<ServiceKey>('address');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    <div className="a36-section">
-      <div className="eyebrow">Product direction</div>
-      <h2>From portal to proactive companion</h2>
-      <p className="lede">Today's UIDAI website is organised around the institution's departments. In 2036 it should be organised around the citizen's life. Five pillars carry the redesign - each one answers evidence from the audit, not decoration.</p>
-      <div className="a36-pillars">
-        {pillars.map((p, i) => <div className="a36-pillar" key={p.title}><div className="pn">{i + 1}</div><h3>{p.title}</h3><p>{p.body}</p></div>)}
-      </div>
-    </div>
+  const [srnRecords, setSrnRecords] = useState<SrnRecord[]>(INITIAL_SRN_RECORDS);
+  const [authLogs, setAuthLogs] = useState<AuthLogEntry[]>(INITIAL_AUTH_LOGS);
 
-    <div className="a36-section">
-      <div className="eyebrow">The scale at stake, on {observed.date}</div>
-      <h2>One of the largest identity systems on Earth</h2>
-      <div className="a36-stats">
-        {observed.stats.map(s => <div className="a36-stat" key={s.label}><div className="v">{s.value}</div><div className="l">{s.label}</div></div>)}
-      </div>
-      <p className="a36-note">Figures from the official Aadhaar dashboard shown on uidai.gov.in, observed {observed.date}. At this scale, a one-percent failure rate is over a crore people having a bad day.</p>
-    </div>
-  </>;
-}
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
-export function App() {
-  return <FileCard>
-    <div className="a36">
-      <nav className="file-nav" aria-label="File pages">
-        <NavLink to="/" end>Concept</NavLink>
-        <NavLink to="/research">Audit</NavLink>
-        <NavLink to="/prototype">Prototype</NavLink>
-        <NavLink to="/wireframes">Wireframes</NavLink>
-        <NavLink to="/testing">Testing</NavLink>
-        <NavLink to="/sources">Sources</NavLink>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Cover />} />
-        <Route path="/research" element={<Research />} />
-        <Route path="/prototype" element={<PrototypeHome />} />
-        <Route path="/prototype/services" element={<PrototypeServices />} />
-        <Route path="/prototype/update" element={<PrototypeUpdate />} />
-        <Route path="/prototype/status" element={<PrototypeStatus />} />
-        <Route path="/prototype/centres" element={<PrototypeCentres />} />
-        <Route path="/prototype/wallet" element={<PrototypeWallet />} />
-        <Route path="/prototype/everything" element={<PrototypeEverything />} />
-        <Route path="/prototype/about" element={<PrototypeAbout />} />
-        <Route path="/prototype/legal" element={<PrototypeLegal />} />
-        <Route path="/prototype/developers" element={<PrototypeDevelopers />} />
-        <Route path="/prototype/newsroom" element={<PrototypeNewsroom />} />
-        <Route path="/prototype/help" element={<PrototypeHelp />} />
-        <Route path="/wireframes" element={<Wireframes />} />
-        <Route path="/testing" element={<Testing />} />
-        <Route path="/sources" element={<Sources />} />
-      </Routes>
+  const handleNavigate = (tab: ViewTab) => {
+    setActiveTab(tab);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenService = (service: ServiceKey) => {
+    setActiveService(service);
+    setActiveTab('services');
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAddSrn = (record: SrnRecord) => {
+    setSrnRecords((prev) => [record, ...prev]);
+  };
+
+  const handleEscalateSrn = (srn: string) => {
+    setSrnRecords((prev) =>
+      prev.map((rec) =>
+        rec.srn === srn
+          ? {
+              ...rec,
+              escalationActive: true,
+              slaDeadline: '21 Nov 2036 (Nodal Officer 24h Mandate)',
+            }
+          : rec
+      )
+    );
+  };
+
+  const handleFlagAuthLog = (id: string) => {
+    setAuthLogs((prev) =>
+      prev.map((entry) =>
+        entry.id === id ? { ...entry, status: 'Flagged' } : entry
+      )
+    );
+  };
+
+  const navLinks: { id: ViewTab; label: { hi: string; en: string } }[] = [
+    { id: 'portal', label: { en: 'Home', hi: 'मुख्य पृष्ठ' } },
+    { id: 'services', label: { en: 'My Aadhaar', hi: 'मेरा आधार' } },
+    { id: 'centers', label: { en: 'Seva Kendras', hi: 'सेवा केंद्र' } },
+    { id: 'ecosystem', label: { en: 'Help & Charter', hi: 'सहायता व चार्टर' } },
+  ];
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white text-[#111111]">
+      {/* Strict 3-Zone Top Bar Contract */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E2E2DC]">
+        <ScrollProgressHairline />
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-8">
+          {/* Zone 1: Single-line Official Brand Wordmark */}
+          <button
+            type="button"
+            onClick={() => handleNavigate('portal')}
+            className="inline-flex items-center gap-2.5 font-display text-lg sm:text-xl font-bold tracking-tight text-[#111111] whitespace-nowrap shrink-0 cursor-pointer"
+          >
+            <AadhaarSunburstMark className="w-7 h-5 shrink-0" />
+            <span>UIDAI · Aadhaar</span>
+          </button>
+
+          {/* Zone 2: 4 Clean Single-Line Nav Links */}
+          <nav
+            aria-label="Primary navigation"
+            className="hidden md:flex items-center gap-8 text-sm font-medium"
+          >
+            {navLinks.map((link) => {
+              const isActive = activeTab === link.id;
+              return (
+                <button
+                  key={link.id}
+                  type="button"
+                  onClick={() => handleNavigate(link.id)}
+                  className={`relative py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                    isActive
+                      ? 'text-[#111111] font-semibold'
+                      : 'text-[#575753] hover:text-[#111111]'
+                  }`}
+                >
+                  {link.label[lang]}
+                  {isActive && (
+                    <motion.span
+                      layoutId="navActiveUnderline"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      className="absolute left-0 right-0 -bottom-[1px] h-[2.5px] bg-[#C8232C]"
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Zone 3: 1 Primary Action Button */}
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => handleOpenService('address')}
+              className="px-4 py-2 text-xs font-semibold text-white bg-[#111111] hover:bg-[#C8232C] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              {lang === 'hi' ? 'पता अद्यतन करें' : 'Update Address'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+              className="md:hidden p-2 text-[#111111] hover:bg-[#F5F5F2] cursor-pointer"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.22 }}
+              className="md:hidden overflow-hidden border-t border-[#E2E2DC] bg-white px-6 py-3 space-y-1"
+            >
+              {navLinks.map((link) => (
+                <button
+                  key={link.id}
+                  type="button"
+                  onClick={() => handleNavigate(link.id)}
+                  className={`block w-full text-left py-2.5 text-sm font-medium cursor-pointer ${
+                    activeTab === link.id ? 'text-[#C8232C] font-semibold' : 'text-[#575753]'
+                  }`}
+                >
+                  {link.label[lang]}
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Main Content Canvas with Tactile Horizontal Glide Transitions */}
+      <main className="flex-1 overflow-x-clip">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {activeTab === 'portal' && (
+              <Portal2036View
+                lang={lang}
+                setLang={setLang}
+                onOpenService={handleOpenService}
+                onNavigate={handleNavigate}
+              />
+            )}
+            {activeTab === 'services' && (
+              <Services2036View
+                lang={lang}
+                activeService={activeService}
+                setActiveService={setActiveService}
+                srnRecords={srnRecords}
+                onAddSrn={handleAddSrn}
+                onEscalateSrn={handleEscalateSrn}
+                authLogs={authLogs}
+                onFlagAuthLog={handleFlagAuthLog}
+              />
+            )}
+            {activeTab === 'centers' && <SevaKendrasView lang={lang} />}
+            {activeTab === 'ecosystem' && (
+              <EcosystemHelpView lang={lang} onOpenService={handleOpenService} />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+
+      {/* Authentic Government of India UIDAI Institutional Footer */}
+      <footer className="border-t border-[#E2E2DC] bg-[#F5F5F2] text-[#575753]">
+        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 text-xs">
+          <div className="flex items-start gap-4">
+            <div className="flex items-center gap-2.5 shrink-0 pt-0.5">
+              <AshokaWheelSeal className="w-7 h-7 text-[#111111]" />
+              <AadhaarSunburstMark className="w-9 h-6" />
+            </div>
+            <div className="space-y-1">
+              <p className="font-semibold text-[#111111]">
+                Unique Identification Authority of India (UIDAI) · Government of India
+              </p>
+              <p>
+                Bangla Sahib Road, Behind Kali Mandir, Gole Market, New Delhi - 110001
+              </p>
+              <p className="font-mono text-[#111111]">
+                Toll-Free 1947 · help@uidai.gov.in · Ministry of Electronics &amp; Information Technology (MeitY)
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <button
+              type="button"
+              onClick={() => handleNavigate('centers')}
+              className="hover:text-[#111111] underline-offset-4 hover:underline cursor-pointer"
+            >
+              Aadhaar Seva Kendras
+            </button>
+            <span aria-hidden="true">/</span>
+            <button
+              type="button"
+              onClick={() => handleNavigate('ecosystem')}
+              className="hover:text-[#111111] underline-offset-4 hover:underline cursor-pointer"
+            >
+              Citizen Charter &amp; 1947 Help
+            </button>
+            <span aria-hidden="true">/</span>
+            <button
+              type="button"
+              onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
+              className="font-semibold text-[#C8232C] hover:underline cursor-pointer"
+            >
+              {lang === 'en' ? 'हिन्दी में देखें' : 'Switch to English'}
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
-  </FileCard>;
+  );
 }
